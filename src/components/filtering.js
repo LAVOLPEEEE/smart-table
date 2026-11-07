@@ -21,6 +21,19 @@ export function initFiltering(elements, indexes) {
       state[action.dataset.field] = "";
     }
 
-    return data.filter((row) => compare(row, state));
+    const filterState = { ...state };
+
+    const totalFrom = filterState.totalFrom;
+    const totalTo = filterState.totalTo;
+
+    delete filterState.totalFrom;
+    delete filterState.totalTo;
+
+    filterState.total = [
+      totalFrom === "" || totalFrom === undefined ? null : Number(totalFrom),
+      totalTo === "" || totalTo === undefined ? null : Number(totalTo),
+    ];
+
+    return data.filter((row) => compare(row, filterState));
   };
 }
